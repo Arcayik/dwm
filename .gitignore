@@ -1,2 +1,4 @@
 patches/
 config.h
+*.o
+dwm
