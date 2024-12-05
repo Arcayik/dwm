@@ -917,11 +917,16 @@ focusmaster(const Arg *arg)
 	i++;
 
 	if (selmon->sel == master) {
-		if (selmon->tagmarked[i] && ISVISIBLE(selmon->tagmarked[i]))
+		if (selmon->tagmarked[i] && ISVISIBLE(selmon->tagmarked[i])) {
 			focus(selmon->tagmarked[i]);
+      restack(selmon);
+      XWarpPointer(dpy, None, selmon->tagmarked[i]->win, 0, 0, 0, 0, selmon->tagmarked[i]->w/2, selmon->tagmarked[i]->h/2);
+    }
 	} else {
 		selmon->tagmarked[i] = selmon->sel;
 		focus(master);
+		restack(selmon);
+		XWarpPointer(dpy, None, master->win, 0, 0, 0, 0, master->w/2, master->h/2);
 	}
 }
 
