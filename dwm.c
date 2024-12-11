@@ -1332,9 +1332,9 @@ moveresize(const Arg *arg) {
 	/* only floating windows can be moved */
 	Client *c;
 	c = selmon->sel;
-	int x, y, w, h, nx, ny, nw, nh, ox, oy, ow, oh;
+	int x, y, w, h, nx, ny, nw, nh;
 	char xAbs, yAbs, wAbs, hAbs;
-	int msx, msy, dx, dy, nmx, nmy;
+	int msx, msy, dx, dy;
 	unsigned int dui;
 	Window dummy;
 
@@ -1374,24 +1374,13 @@ moveresize(const Arg *arg) {
 			ny = y;
 	}
 
-	ox = c->x;
-	oy = c->y;
-	ow = c->w;
-	oh = c->h;
-
 	XRaiseWindow(dpy, c->win);
 	Bool xqp = XQueryPointer(dpy, root, &dummy, &dummy, &msx, &msy, &dx, &dy, &dui);
 	resize(c, nx, ny, nw, nh, True);
 
-	/* move cursor along with the window to avoid problems caused by the sloppy focus */
-	if (xqp && ox <= msx && (ox + ow) >= msx && oy <= msy && (oy + oh) >= msy)
-	{
-		nmx = c->x - ox + c->w - ow;
-		nmy = c->y - oy + c->h - oh;
-		/* make sure the cursor stays inside the window */
-		if ((msx + nmx) > c->x && (msy + nmy) > c->y)
-			XWarpPointer(dpy, None, None, 0, 0, 0, 0, nmx, nmy);
-	}
+  /* make sure the cursor stays inside the window */
+  if (xqp)
+    XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
 }
 
 void
@@ -1400,8 +1389,8 @@ moveresizeedge(const Arg *arg) {
 	Client *c;
 	c = selmon->sel;
 	char e;
-	int nx, ny, nw, nh, ox, oy, ow, oh, bp;
-	int msx, msy, dx, dy, nmx, nmy;
+	int nx, ny, nw, nh, bp;
+	int msx, msy, dx, dy;
 	int starty;
 	unsigned int dui;
 	Window dummy;
@@ -1460,23 +1449,13 @@ moveresizeedge(const Arg *arg) {
 	if(e == 'R')
 		nw = c->w + c->x + 2 * c->bw == selmon->mx + selmon->mw ? c->oldw : selmon->mx + selmon->mw - c->x - 2 * c->bw;
 
-	ox = c->x;
-	oy = c->y;
-	ow = c->w;
-	oh = c->h;
-
 	XRaiseWindow(dpy, c->win);
 	Bool xqp = XQueryPointer(dpy, root, &dummy, &dummy, &msx, &msy, &dx, &dy, &dui);
 	resizeclient(c, nx, ny, nw, nh);
 
-	/* move cursor along with the window to avoid problems caused by the sloppy focus */
-	if (xqp && ox <= msx && (ox + ow) >= msx && oy <= msy && (oy + oh) >= msy) {
-		nmx = c->x - ox + c->w - ow;
-		nmy = c->y - oy + c->h - oh;
-		/* make sure the cursor stays inside the window */
-		if ((msx + nmx) > c->x && (msy + nmy) > c->y)
-			XWarpPointer(dpy, None, None, 0, 0, 0, 0, nmx, nmy);
-	}
+  /* make sure the cursor stays inside the window */
+  if (xqp)
+    XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
 }
 
 Client *
