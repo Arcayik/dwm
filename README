@@ -53,6 +53,8 @@ Changes
 + focusmaster-return patch fixed, now warps cursor and calls restack()
 + sticky windows are unkillable
 + moveresize patch warps cursor to center of client
++ status bar is drawn on both active and inactive monitors
++ focusmon() warps cursor to center of monitor if empty
 
 Patches
 =======
