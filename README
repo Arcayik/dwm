@@ -47,8 +47,15 @@ Configuration
 The configuration of dwm is done by creating a custom config.h
 and (re)compiling the source code.
 
+Changes
+==========
++ monocle layout has gaps
++ focusmaster-return patch fixed, now warps cursor and calls restack()
++ sticky windows are unkillable
++ moveresize patch warps cursor to center of client
+
 Patches
--------
+=======
 alwaysontop-6.2
 pertag-20200914
 fullgaps-6.4
@@ -60,3 +67,4 @@ dwm-scratchpad-20240321
 dwm-fixborders-6.2
 dwm-deck-6.2 + dwm-deck-tilegap-6.1
 dwm-focusmaster-return-6.2
+dwm-moveresize-20221210
