@@ -55,6 +55,7 @@ Changes
 + moveresize patch warps cursor to center of client
 + status bar is drawn on both active and inactive monitors
 + focusmon() warps cursor to center of monitor if empty
++ movestack() now doesn't crash when used on empty tag
 
 Patches
 =======
