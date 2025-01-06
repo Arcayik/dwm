@@ -180,6 +180,7 @@ static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
+static void horizontal(Monitor *m);
 static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
 static void killclient(const Arg *arg);
@@ -1090,6 +1091,26 @@ grabkeys(void)
 							 GrabModeAsync, GrabModeAsync);
 		XFree(syms);
 	}
+}
+
+void
+horizontal(Monitor *m)
+{
+	Client *c;
+	unsigned int n, i;
+
+	/* Count windows */
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+
+	if(!n)
+		return;
+	else {/* Split vertically */
+    i = 0;
+    c = nexttiled(m->clients);
+    resize(c, m->wx + i * m->mw / n + selmon->gappx, m->wy + selmon->gappx, m->mw / n - (2 * c->bw) - (2 * selmon->gappx), m->wh - (2 * c->bw) - (2 * selmon->gappx), False);
+		for (i = 1, c = nexttiled(c->next); c; c = nexttiled(c->next), i++)
+			resize(c, m->wx + i * m->mw / n, m->wy + selmon->gappx, m->mw / n - (2 * c->bw) - selmon->gappx, m->wh - (2 * c->bw) - (2 * selmon->gappx), False);
+  }
 }
 
 void
