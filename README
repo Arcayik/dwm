@@ -55,7 +55,8 @@ Changes
 + moveresize patch warps cursor to center of client
 + status bar is drawn on both active and inactive monitors
 + focusmon() warps cursor to center of monitor if empty
-+ movestack() now doesn't crash when used on empty tag
++ movestack() no longer crashes when used on empty tag
++ bar indicator for sticky windows
 
 Patches
 =======
@@ -68,6 +69,8 @@ dwm-sticky-6.4
 dwm-cursorwarp-6.3
 dwm-scratchpad-20240321
 dwm-fixborders-6.2
-dwm-deck-6.2 + dwm-deck-tilegap-6.1
+dwm-deck-6.2
+dwm-deck-tilegap-6.1
 dwm-focusmaster-return-6.2
 dwm-moveresize-20221210
+dwm-horizontal-6.4
