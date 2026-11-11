@@ -826,6 +826,9 @@ drawbar(Monitor *m)
 				if (m->sel->isalwaysontop)
 					drw_rect(drw, x + boxs, bh - boxw, boxw, boxw, 0, 0);
 			}
+      if (m->sel->issticky) {
+        drw_rect(drw, x, 0, 1, bh, 0, 0);
+      }
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);
