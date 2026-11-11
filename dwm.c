@@ -1555,7 +1555,13 @@ void
 savesession(void)
 {
 	FILE *fw = fopen(SESSION_FILE, "w");
-	for (Client *c = selmon->clients; c != NULL; c = c->next) { // get all the clients with their tags and write them to the file
+  // get selected tags and write to file
+  for (Monitor *m = selmon; m != NULL; m = m->next) {
+    fprintf(fw, "%u\n", m->tagset[m->seltags]);
+    break; // just one monitor for now
+  }
+  // get all clients with their tags and write to file
+	for (Client *c = selmon->clients; c != NULL; c = c->next) {
 		fprintf(fw, "%lu %u\n", c->win, c->tags);
 	}
 	fclose(fw);
@@ -1570,6 +1576,14 @@ restoresession(void)
 		return;
 
 	char *str = malloc(23 * sizeof(char)); // allocate enough space for excepted input from text file
+
+  if (fscanf(fr, "%[^\n] ", str) != EOF) {
+    unsigned int seltags;
+    int check = sscanf(str, "%u", &seltags);
+    if (check == 1)
+      selmon->tagset[selmon->seltags] = seltags;
+  }
+
 	while (fscanf(fr, "%[^\n] ", str) != EOF) { // read file till the end
 		long unsigned int winId;
 		unsigned int tagsForWin;
@@ -1583,7 +1597,7 @@ restoresession(void)
 				break;
 			}
 		}
-    }
+  }
 
 	for (Client *c = selmon->clients; c ; c = c->next) { // refocus on windows
 		focus(c);
@@ -2548,7 +2562,9 @@ view(const Arg *arg)
 
 	if ((arg->ui & TAGMASK) == selmon->tagset[selmon->seltags])
 		return;
+
 	selmon->seltags ^= 1; /* toggle sel tagset */
+
 	if (arg->ui & TAGMASK) {
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
 		selmon->pertag->prevtag = selmon->pertag->curtag;
